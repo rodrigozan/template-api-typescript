@@ -1,15 +1,31 @@
-import { Router } from 'express';
+import { Router } from 'express'
 
-import UserController from './controllers/UserController';
+import UserController from './controllers/UserController'
+import AuthController from './controllers/AuthController'
+import ChangePasswordController from './controllers/ChangePasswordController'
 
-const router = Router();
+import TestController from './controllers/TestController'
 
-const user_Controller = UserController;
+import { authMiddleware } from './middlewares/AuthMiddleware'
 
-router.post('/users', user_Controller.create);
-router.get('/users', user_Controller.getAllUsers);
-router.get('/users/:id', user_Controller.getUser); 
-router.put('/users/:id', user_Controller.update);
-router.delete('/users/:id', user_Controller.delete);
+const router = Router()
 
-export default router;
+const userController = UserController
+const authController = AuthController
+const changePassCtrl = ChangePasswordController
+
+const testCtrl = TestController
+
+router.post('/users', userController.create)
+router.get('/users', userController.get)
+router.get('/users/:id', userController.getUser) 
+router.put('/users/:id', authMiddleware, userController.update)
+router.delete('/users/:id', authMiddleware, userController.delete)
+
+router.post('/auth', authController.login)
+
+router.post('/change-password/:id', changePassCtrl.change)
+
+router.post('/test-users', authMiddleware, testCtrl.postUsers)
+
+export default router

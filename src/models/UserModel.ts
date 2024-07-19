@@ -17,7 +17,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Método para verificar a senha
 userSchema.methods.checkPassword = async function (password: string) {
     return await bcrypt.compare(password, this.password);
 };

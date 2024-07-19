@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 
 dotenv.config()
 
-
 export class Connection {
     static async connect() {
         try {
